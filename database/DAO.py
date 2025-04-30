@@ -6,14 +6,14 @@ from model.voli import Voli
 class DAO():
     def __init__(self):
         pass
-    def getAereoporti(self):
+
+    @staticmethod
+    def getAereoporti():
         conn = DBConnect.get_connection()
-
         result = []
-
         cursor = conn.cursor(dictionary=True)
         query = """SELECT *
-                    FROM aereoporti"""
+                    FROM airports"""
         cursor.execute(query)
 
         for row in cursor:
@@ -23,15 +23,18 @@ class DAO():
         conn.close()
         return result
 
-    def getVoli(self):
+    @staticmethod
+    def getVoli(aeroporto):
         conn = DBConnect.get_connection()
-
         result = []
 
         cursor = conn.cursor(dictionary=True)
+
         query = """SELECT *
-                    FROM flights"""
-        cursor.execute(query)
+                   FROM flights
+                   WHERE ORIGIN_AIRPORT_ID = %s OR DESTINATION_AIRPORT_ID = %s"""
+
+        cursor.execute(query, (aeroporto.ID, aeroporto.ID))
 
         for row in cursor:
             result.append(Voli(**row))

@@ -16,7 +16,7 @@ class Aereoporti():
         return f"L'aereoporto {self.ID} è conosciuto con il nome di {self.AIRPORT}"
 
     def __eq__(self, other):
-        return self.ID == other.ID
+        return self.ID == other
 
     def __hash__(self):
         return hash(self.ID)
